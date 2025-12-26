@@ -10,6 +10,7 @@ Anh Tran & Khiem Nguyen
 - [ ] Set up signup/ - Anh
 - [ ] Connect PostgreSQL - Anh
 - [ ] Add endpoint for contact - Anh
+- [ ] Deploy backend
 ### Frontend - React
 - [ ] Add landing page - Khiem
 - [ ] Add navbar - Khiem
