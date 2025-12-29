@@ -27,8 +27,10 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Logo from "./Logo";
+import { Button } from "./ui/button";
 
 const data = {
   user: {
@@ -148,13 +150,15 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { toggleSidebar, state } = useSidebar();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenu >
+        <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-4 h-10">
-                <Logo />
+            <div className="flex items-center gap-3 h-10" onClick={() => toggleSidebar()}>
+                <Logo /> {state === "expanded" && <span>KatanaID</span>}
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
