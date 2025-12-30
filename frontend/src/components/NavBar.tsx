@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { ArrowRight, LucideCodeXml } from "lucide-react";
+import { ArrowRight, LucideCodeXml, Menu } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
@@ -8,24 +8,34 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/useAuthStore";
 import Logo from "./Logo";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const { token, logout } = useAuthStore();
 
   return (
-    <nav className="sticky top-0 w-full h-full border-b-2 bg-background py-1.5">
-      <div className="mx-auto max-w-6xl flex items-center justify-center">
+    <nav className="sticky top-0 w-full h-full border-b-2 bg-background py-1.5 px-4">
+      <div className="mx-auto max-w-6xl flex items-center justify-between">
+        {/* Logo */}
         <div
-          className="flex flex-1 items-center gap-3"
+          className="flex items-center gap-3 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <Logo/>
+          <Logo />
           <p className="text-xl hover:drop-shadow-[0_0_10px_rgba(60,130,240,1)] transition-all">
             KatanaID
           </p>
         </div>
-        <div className="flex flex-1 items-center justify-center gap-3">
+
+        {/* Desktop nav - hidden on mobile */}
+        <div className="hidden md:flex items-center justify-center gap-3">
           <HoverCard openDelay={200} closeDelay={400}>
             <HoverCardTrigger asChild>
               <Button variant="ghost">Developers</Button>
@@ -50,7 +60,9 @@ const NavBar = () => {
           <Button variant="ghost">Demo</Button>
           <Button variant="ghost">Contact</Button>
         </div>
-        <div className="flex flex-1 items-center justify-end gap-3">
+
+        {/* Desktop right section - hidden on mobile */}
+        <div className="hidden md:flex items-center justify-end gap-3">
           {token === null ? (
             <Button variant="ghost" onClick={() => navigate("/signup")}>
               Sign in
@@ -69,6 +81,70 @@ const NavBar = () => {
           <Button variant="default">
             Verify content <ArrowRight />
           </Button>
+        </div>
+
+        {/* Mobile menu button + sheet */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="">
+              <div className="flex flex-col gap-4 mt-4 px-5 pt-10">
+                <Button variant="ghost" className="justify-start">
+                  Demo
+                </Button>
+                <Button variant="ghost" className="justify-start">
+                  Contact
+                </Button>
+                <div className="flex flex-col gap-2 pt-4 border-t">
+                  <a href="https://github.com/suka712">
+                    <Button variant="ghost" className="w-full justify-start">
+                      Khiem Nguyen
+                    </Button>
+                  </a>
+                  <a href="https://github.com/trnahnh">
+                    <Button variant="ghost" className="w-full justify-start">
+                      Anh Tran
+                    </Button>
+                  </a>
+                  <a href="https://github.com/trnahnh/katanaid">
+                    <Button variant="outline" className="w-full justify-start">
+                      <LucideCodeXml className="mr-2" />
+                      GitHub
+                    </Button>
+                  </a>
+                </div>
+                <div className="border-t pt-4 flex flex-col gap-2">
+                  {token === null ? (
+                    <Button
+                      variant="ghost"
+                      className="justify-start"
+                      onClick={() => navigate("/signup")}
+                    >
+                      Sign in
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      className="justify-start"
+                      onClick={() => {
+                        logout();
+                        navigate("/");
+                      }}
+                    >
+                      Log out
+                    </Button>
+                  )}
+                  <Button variant="default" className="w-full justify-start">
+                    Verify content <ArrowRight />
+                  </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>
