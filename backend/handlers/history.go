@@ -4,9 +4,13 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"katanaid/database"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // AnalysisRecord represents a single analysis from the database
@@ -28,17 +32,60 @@ type HistoryResponse struct {
 	Message  string           `json:"message"`
 }
 
+// getUserIDFromToken extracts user_id from JWT token in Authorization header
+func getUserIDFromToken(r *http.Request) (int, error) {
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return 0, jwt.ErrTokenMalformed
+	}
+
+	// Extract token from "Bearer <token>"
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return 0, jwt.ErrTokenMalformed
+	}
+
+	tokenString := parts[1]
+
+	// Parse and validate token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, jwt.ErrSignatureInvalid
+		}
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if userID, ok := claims["user_id"].(float64); ok {
+			return int(userID), nil
+		}
+	}
+
+	return 0, jwt.ErrTokenInvalidClaims
+}
+
 // History handles GET /api/history
 func History(w http.ResponseWriter, r *http.Request) {
-	// TODO: Get user_id from JWT token and filter by user
-	// For now, return all analyses
+	// Get user_id from JWT token
+	userID, err := getUserIDFromToken(r)
+	if err != nil {
+		log.Printf("Error getting user from token: %v", err)
+		writeJSON(w, http.StatusUnauthorized, ErrorResponse{Error: "Unauthorized"})
+		return
+	}
 
 	rows, err := database.DB.Query(
 		context.Background(),
 		`SELECT id, file_id, filename, file_type, result, confidence, details, created_at
 		 FROM analyses
+		 WHERE user_id = $1
 		 ORDER BY created_at DESC
 		 LIMIT 50`,
+		userID,
 	)
 
 	if err != nil {
