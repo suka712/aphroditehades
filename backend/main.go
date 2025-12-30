@@ -49,6 +49,9 @@ func main() {
 	database.Connect()
 	defer database.Close()
 
+	// Initialize OAuth
+	handlers.InitOAuth()
+
 	// Initialize router
 	r := chi.NewRouter()
 
@@ -79,6 +82,12 @@ func main() {
 
 	// Contact endpoint
 	r.Post("/api/contact", handlers.Contact)
+
+	// OAuth endpoints
+	r.Get("/auth/google", handlers.GoogleLogin)
+	r.Get("/auth/google/callback", handlers.GoogleCallback)
+	r.Get("/auth/github", handlers.GitHubLogin)
+	r.Get("/auth/github/callback", handlers.GitHubCallback)
 
 	// Start server
 	fmt.Println("Server is running on port 8080")
