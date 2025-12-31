@@ -105,7 +105,7 @@ const LandingPage = () => {
       </div>
 
       {/* Features section */}
-      <MaxWidthWrapper className="mt-10 relative pt-25 z-10">
+      <MaxWidthWrapper className="my-20 relative pt-25 z-10">
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
             <MagicBadge title="Features" />
@@ -131,7 +131,7 @@ const LandingPage = () => {
       </MaxWidthWrapper>
 
       {/* CTA section */}
-      <MaxWidthWrapper className="mt-20 max-w-[100vw] overflow-x-hidden scrollbar-hide">
+      <MaxWidthWrapper className="my-20 max-w-[100vw] overflow-x-hidden scrollbar-hide">
         <AnimationContainer delay={0.1}>
           <LampContainer>
             <div className="flex flex-col items-center justify-center relative w-full text-center max-w-3xl">
