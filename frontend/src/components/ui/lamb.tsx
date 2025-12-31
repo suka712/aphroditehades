@@ -14,7 +14,7 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden w-full rounded-md z-0",
+        "relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden w-full rounded-md z-0",
         className
       )}
     >
@@ -27,7 +27,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="absolute inset-auto z-30 h-5 w-20 -translate-y-28 bg-linear-to-r from-transparent via-blue-500 to-transparent blur-sm"
+          className="absolute inset-auto z-30 h-5 w-20 -translate-y-16 md:-translate-y-28 bg-linear-to-r from-transparent via-blue-500 to-transparent blur-sm"
         ></motion.div>
         <motion.div
           initial={{ width: "15rem" }}
@@ -37,10 +37,10 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="absolute inset-auto z-50 h-px w-120 -translate-y-28 bg-white shadow-[0_0_10px_2px_rgba(255,255,255,0.8)]"
+          className="absolute inset-auto z-50 h-px w-60 md:w-120 -translate-y-16 md:-translate-y-28 bg-white shadow-[0_0_10px_2px_rgba(255,255,255,0.8)]"
         ></motion.div>
       </div>
-      <div className="relative z-50 flex -translate-y-80 flex-col items-center px-5">
+      <div className="relative z-50 flex -translate-y-40 md:-translate-y-80 flex-col items-center px-5">
         {children}
       </div>
     </div>
