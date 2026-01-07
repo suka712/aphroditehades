@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  IconBook,
   IconChartBar,
   IconFingerprint,
   IconHelp,
@@ -49,9 +50,9 @@ const data = {
       icon: IconSettings,
     },
     {
-      title: "Help",
-      url: "#",
-      icon: IconHelp,
+      title: "Documentations",
+      url: "http://docs.katanaid.com/",
+      icon: IconBook,
     },
   ],
 };
